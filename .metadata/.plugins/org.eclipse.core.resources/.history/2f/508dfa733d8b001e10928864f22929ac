@@ -1,0 +1,19 @@
+package com.spring.data.dao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.spring.data.entity.User;
+
+@Repository
+public class UserDao  {
+
+	@Autowired
+	UserRepository repo;
+	
+	private String selectall = "SELECT * FROM USER";
+	
+	public User selectAll() {
+		return null;
+	}
+}

@@ -1,0 +1,30 @@
+package com.spring.data.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.spring.data.entity.Customer;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+
+@Repository
+public class CustomerQueryRepository {
+
+	@PersistenceContext
+	EntityManager em;
+
+//	public Customer getCustomerByCity(String city) {
+//		Query jpqlQuery = em.createQuery("SELECT c FROM Customer u WHERE u.city=:city");
+//		jpqlQuery.setParameter("city", city);
+//		return (Customer) jpqlQuery.getSingleResult();  // we need to cast additionally
+//	}
+
+	public Customer getCustomerByCity(String city) {
+		TypedQuery<Customer> typedQuery = em.createQuery("SELECT c FROM Customer u WHERE u.city=:city", Customer.class);
+		typedQuery.setParameter("city", city);
+		return typedQuery.getSingleResult();
+		// here we don't need to cast additionally , If we use TypedQuery<OurEntity>
+		//avoiding possible casting exceptions
+	}
+}

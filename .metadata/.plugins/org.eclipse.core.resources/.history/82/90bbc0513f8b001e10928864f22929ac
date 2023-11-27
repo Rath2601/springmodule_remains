@@ -1,0 +1,10 @@
+package com.spring.data;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class SpringDataMainApplication {
+	public static void main(String[] args) {
+
+	}
+}

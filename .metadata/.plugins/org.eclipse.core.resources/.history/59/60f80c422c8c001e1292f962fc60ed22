@@ -1,0 +1,30 @@
+package com.spring.data;
+
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.spring.data.dao.CustomerRepository;
+import com.spring.data.entity.Customer;
+
+@SpringBootApplication
+public class SpringDataMainApplication implements CommandLineRunner{
+	
+	@Autowired
+	CustomerRepository repo;
+	
+	
+	public static void main(String[] args) {
+		SpringApplication.run(SpringDataMainApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		Customer c1 = new Customer(5L, "karthick", "subburaj", "karthick@gmail.com", 9083757903L, "Madurai", "India",
+				LocalDate.of(1987, 10, 24));
+         		repo.save(c1);
+	}
+}

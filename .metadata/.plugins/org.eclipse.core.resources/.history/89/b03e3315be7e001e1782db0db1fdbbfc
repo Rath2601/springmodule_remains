@@ -1,0 +1,12 @@
+package springioc.loosecoupling;
+
+public class Manager {
+	public static void main(String[] args) {
+		Employee e = new Employee(new Task());
+		Employee e1 = new Employee(new Competencies());
+		Employee e2 = new Employee(new Standup());
+		e.checkStatus();
+		e1.checkStatus();
+		e2.checkStatus();
+	}
+}

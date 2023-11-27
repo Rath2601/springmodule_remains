@@ -1,0 +1,105 @@
+package com.rath.springboot.rest.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rath.springboot.rest.entity.Person;
+
+@RestController
+@RequestMapping("/person")
+public class PersonController {
+
+	// mapping for a string
+
+	@GetMapping("/hello")
+	public ResponseEntity<String> helloworld() {
+		// configuring body and status
+//		return new ResponseEntity<String>("Hello Rath!", HttpStatus.OK);
+		return ResponseEntity.ok("Hello Rath!");
+	}
+
+	// mapping for a bean
+
+	@GetMapping
+	public ResponseEntity<Person> getPerson() {
+		Person person = new Person(100, "Surya", "Gujarat");
+//		return new ResponseEntity<Person>(person, HttpStatus.OK);
+		return ResponseEntity.ok(person);
+	}
+
+	// mapping for a list of objects
+
+	@GetMapping("/persons")
+	public ResponseEntity<List<Person>> getPersons() {
+		List<Person> persons = new ArrayList<Person>();
+		persons.add(new Person(100, "Surya", "Gujarat"));
+		persons.add(new Person(101, "Vijay", "Tamilnadu"));
+		persons.add(new Person(100, "Ramesh", "Goa"));
+//		return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
+		return ResponseEntity.ok().header("rath", "coder").header("suthan", "friend").body(persons);
+	}
+
+	// mapping with @PathVariable
+	// http://localhost:8080/person/101
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Person> getPersonWithPathVariable(@PathVariable int id) {
+		Person person = new Person(id, "Vijay", "Tamilnadu");
+//		return new ResponseEntity<Person>(person, HttpStatus.OK);
+		return ResponseEntity.ok(person);
+	}
+
+	// mapping with @RequestParam
+	// http://localhost:8080/person?id=101&name=Vijay&location=Tamilnadu
+
+	// name=Vijay&location=Tamilnadu this won't be considered unless we map it with
+	// @RequestParam
+
+	@GetMapping("/personwithquery")
+	public ResponseEntity<Person> getPersonWithReqParam(@RequestParam int id) {
+		Person person = new Person(id, "Vijay", "Tamilnadu");
+//		return new ResponseEntity<Person>(person, HttpStatus.OK);
+		return ResponseEntity.ok(person);
+	}
+
+	// PostMapping
+	@PostMapping("/create")
+//	@ResponseStatus(HttpStatus.CREATED) // Just to conform the developer about the status of the API
+
+	public ResponseEntity<String> postPerson(@RequestBody Person person) {
+
+		System.out.println(person.getId());
+		System.out.println(person.getName());
+		System.out.println(person.getLocation()); // Just for checking purpose
+		return new ResponseEntity<String>("Add panniyachi", HttpStatus.CREATED);
+	}
+
+	// PutMapping
+	@PutMapping("/change/{id}")
+//	@ResponseStatus(HttpStatus.ACCEPTED)
+
+	public ResponseEntity<Person> putPerson(@RequestBody Person person, @PathVariable(name = "id") int id) {
+		person.setId(id);
+//		return new ResponseEntity<Person>(person, HttpStatus.OK);
+		return ResponseEntity.ok(person);
+	}
+
+//delete mapping
+	@DeleteMapping("/{id}/delete")
+	public ResponseEntity<String> deletePerson(@PathVariable("id") int id) {
+//		return new ResponseEntity<String>("deleted person with id "+id, HttpStatus.OK);
+		return ResponseEntity.ok("deleted successfully");
+	}
+}

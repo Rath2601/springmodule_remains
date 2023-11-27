@@ -1,0 +1,65 @@
+package com.spring.data.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.data.dao.CustomerRepository;
+import com.spring.data.entity.Customer;
+
+@RestController
+@RequestMapping("/customer")
+public class CustomerController {
+
+	@Autowired
+	CustomerRepository repo;
+
+	@GetMapping
+	public ResponseEntity<Customer> getCustomer(@RequestParam("id") Long id) {
+		Customer customer = repo.findById(id).get();
+		return ResponseEntity.ok(customer);
+	}
+
+	@GetMapping
+	public ResponseEntity<Customer> getmethod(@RequestParam("id") Long id) {
+		Customer customer = repo.findById(id).get();
+		return ResponseEntity.ok(customer);
+	}
+
+	@PostMapping
+	public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+		Customer saveCustomer = repo.save(customer);
+		return ResponseEntity.ok(saveCustomer);
+	}
+
+	@PostMapping("/customers")
+	public ResponseEntity<List<Customer>> addCustomers(@RequestBody List<Customer> customers) {
+
+		List<Customer> savedCustomers = repo.saveAll(customers);
+		return new ResponseEntity<List<Customer>>(savedCustomers, HttpStatus.CREATED);
+
+	}
+
+	@PutMapping
+	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) {
+		Customer updateCustomer = repo.save(customer);
+		return ResponseEntity.ok(updateCustomer);
+	}
+
+	@DeleteMapping
+	public String deleteCustomer(@RequestParam("id") Long id) {
+		repo.deleteById(id);
+		return "Deleted successfully";
+	}
+
+}

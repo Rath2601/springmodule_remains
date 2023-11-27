@@ -1,0 +1,26 @@
+package com.spring.data.dao;
+
+
+import com.spring.data.entity.Customer;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+
+public class CustomerQueryRepository {
+
+	@PersistenceContext
+	EntityManager em;
+
+	public Customer getUserByCity(String city) {
+		
+		String jpqlQuery = "SELECT c FROM Customer u WHERE u.city=:city";
+
+		Customer singleResult = extracted(city, jpqlQuery).getSingleResult();
+		return singleResult;
+	}
+
+	private TypedQuery<Customer> extracted(String city, String jpqlQuery) {
+		return em.createQuery(jpqlQuery, Customer.class).setParameter(0, city);
+	}
+}
